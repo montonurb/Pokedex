@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/view/android/home.dart';
 
 void main(List<String> args) {
   runApp(const Pokedex());
@@ -14,6 +15,8 @@ class Pokedex extends StatefulWidget {
 class _PokedexState extends State<Pokedex> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const MaterialApp(
+      home: HomePage(),
+    );
   }
 }
