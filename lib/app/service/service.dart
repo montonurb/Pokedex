@@ -1,20 +1,26 @@
-// ignore_for_file: avoid_print
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
-import 'package:pokedex/app/model/pokedex.dart';
+import 'package:pokedex/app/model/pokemon_model.dart';
 
 class PokedexService {
-  Future<List<PokemonSimple>> buscarDados() async {
-    var response = await Dio().get('https://pokeapi.co/api/v2/pokemon');
+  Future<List<PokemonModel>> buscarDados() async {
+    var response = await Dio().get(
+        'https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json');
+    final json = jsonDecode(response.data) as Map<String, dynamic>;
+    List list = json["pokemon"];
 
-    final data = response.data['results'] as List;
-    final pokemons = data
-        .map((e) => PokemonSimple(
+    return list
+        .map((e) => PokemonModel(
+              id: e['id'],
+              num: e['num'],
               name: e['name'],
-              url: e['url'],
+              img: e['img'],
+              height: e['height'],
+              weight: e['weight'],
+              candy: e['candy'],
+              egg: e['egg'],
             ))
         .toList();
-
-    print("1: $pokemons");
-    return pokemons;
   }
 }

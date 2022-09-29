@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/app/model/pokedex.dart';
+import 'package:pokedex/app/model/pokemon_model.dart';
 import 'package:pokedex/app/service/service.dart';
 import 'package:pokedex/app/state/pokemon_state.dart';
 import 'package:pokedex/app/store/pokemon_store.dart';
@@ -35,22 +35,30 @@ class _HomePageState extends State<HomePage> {
               child: CircularProgressIndicator(),
             );
           } else if (state is SuccessPokemonState) {
-            return ListView.builder(
-              itemBuilder: (context, index) {
-                PokemonSimple pokemon = pokemonStore.pokemons[index];
-                return Card(
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        child: ListTile(
-                          leading: Icon(Icons.map),
-                          title: Text("${pokemon.name}"),
-                        ),
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 300,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                ),
+                itemBuilder: (context, index) {
+                  PokemonModel pokemon = pokemonStore.pokemons[index];
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.network(pokemon.img),
+                          Text(pokemon.name.toUpperCase()),
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              },
+                    ),
+                  );
+                },
+              ),
             );
           } else if (state is EmptyPokemonState) {
             return const Center(
